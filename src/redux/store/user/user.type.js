@@ -1,0 +1,10 @@
+export const USER_TYPES = {
+    CURRENT_USER: 'user/CURRENT_USER',
+    SET_SERVICES: 'user/SET_SERVICES',
+    SYSTEM_RATES: 'user/SYSTEM_RATES',
+    SYSTEM_BANKS: 'user/SYSTEM_BANKS',
+    BIOMETRIC: 'user/BIOMETRIC',
+    PRODUCT: 'user/PRODUCT',
+    ADS: 'user/ADS',
+    FINGER_PRINT: 'user/FINGER_PRINT'
+}

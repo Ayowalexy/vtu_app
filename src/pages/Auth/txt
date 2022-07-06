@@ -1,0 +1,5 @@
+{visible &&
+                    <BiometricPopup
+                        visible={visible}
+                        setVisible={setVisible}
+                    />}

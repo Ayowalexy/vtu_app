@@ -1,0 +1,21 @@
+export const Colors = {
+    // PRIMARY: 'rgb(117, 111, 235)',
+    PRIMARY: 'rgb(255, 212, 0)',
+    SECONDARY: 'rgb(49, 149, 36)',
+    PRIMARY_FADED: 'rgba(255, 221, 0, 0.2)',
+    PRIMARY_FADED_2: 'rgba(255, 212, 0, 0.8)',
+    PRIMARY_DEEP: '#27245c',
+    DEFAULT: "#000",
+    WHITE: '#FFF',
+    SEARCH: 'rgba(0,0,0,0.2)',
+    DEFAULT_FADED: 'rgba(0,0,0,0.7)',
+    SUCCESS: '#4BB543',
+    SUCCESS_FADED: 'rgba(75,181,67, 0.2)',
+    MONEY_OUT: '#fc5442',
+    MONEY_IN: '#37803d',
+    DEFAULT_FADED_2: 'rgba(0,0,0,0.2)',
+    DEFAULT_FADED_3: 'rgba(0,0,0,0.4)',
+    ERROR: 'red',
+    ERROR_FADED: 'rgba(249, 0,0,0.2)',
+    ASH: '#ddd'
+}
