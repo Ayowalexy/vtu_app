@@ -12,7 +12,7 @@ const Search = ({ value, onChangeText, color, top, placeHolder, ...otherProps })
             onChangeText={onChangeText}
             placeholderTextColor={Colors.DEFAULT}
             style={[styles.box, {
-                    backgroundColor: color ? x : Colors.WHITE,
+                    backgroundColor: color ? color : Colors.WHITE,
                     elevation: color ? null : 1,
                     marginTop: top
                 }]}

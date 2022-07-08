@@ -65,7 +65,6 @@ const ForgotPassword = () => {
                         onChangeText={(text) => onChange(name)(text)}
                         {...inputProps}
                         secureTextEntry={name.toLowerCase() == 'password' && secureTextEntry}
-                        keyboardType='number-pad'
                     />
                 </View>
 

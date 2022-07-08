@@ -58,6 +58,8 @@ import Internet from "./src/pages/Dashboard/Internet";
 import ForgotPassword from "./src/pages/Auth/ForgetPassword";
 import VoucherProfile from "./src/pages/Voucher/VoucherProfile";
 import BuyFrom from "./src/pages/Voucher/BuyFrom";
+import Referral from "./src/pages/Settings/Referral";
+import HowItWorks from "./src/pages/Settings/How-it-works";
 
 
 import Tabs from "./navigators/Tabs";
@@ -162,6 +164,8 @@ const App = () => {
                   </Stack.Group>
                   <Stack.Group>
                     <Stack.Screen name="Update settings" component={UpdateSettings} />
+                    <Stack.Screen name="Referral" component={Referral} />
+                    <Stack.Screen name="How it Works" component={HowItWorks} />
                     <Stack.Screen name='Transaction History' component={TransactionHistory} />
                     <Stack.Screen name='Transaction Details' component={TransactionDetails} />
                     <Stack.Screen name='Frequent Payment' component={FrequentPayment} />

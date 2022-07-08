@@ -92,12 +92,12 @@ const Cables = ({ navigation }) => {
                                 onPress={() => {
 
 
-                                    if (element?.product_name !== 'SHOWMAX') {
+                                    // if (element?.product_name !== 'SHOWMAX') {
                                         navigation.navigate('Cables Payment', {
                                             data: element?.product_name,
                                             product_id: element?.product_id
                                         })
-                                    }
+                                    // }
                                 }}
                             >
                                 <Box
@@ -132,9 +132,9 @@ const Cables = ({ navigation }) => {
                                         <IIText 
                                             paddingLeft={10}
                                             type='B'
-                                            opacity={
-                                                element.product_name == 'SHOWMAX' ? 0.3 : 1
-                                            }
+                                            // opacity={
+                                            //     element.product_name == 'SHOWMAX' ? 0.3 : 1
+                                            // }
                                              >{element?.product_name}</IIText>
                                         <IIcon
                                             name='md-chevron-forward'

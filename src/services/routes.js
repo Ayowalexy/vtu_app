@@ -61,7 +61,7 @@ const urls = {
     RESET: {
         reset_pin: `${baseUrl}/user/pin.php`,
         reset_password: `${baseUrl}/user/change_password.php`,
-        reset_profile: `${baseUrl}user/update_profile.php`,
+        reset_profile: `${baseUrl}/user/update_profile.php`,
         change_password: `${baseUrl}/user/reset_password.php`
 
     },

@@ -156,6 +156,9 @@ const TransactionHistory = ({ navigation }) => {
                             
                         ))
                     }
+                    {
+                        !Boolean(element?.length) && (<IIText type='B'>No Transaction yet</IIText>)
+                    }
                 </IView>
             </ScrollView>
             <NetworkModal

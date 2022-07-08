@@ -31,7 +31,7 @@ const ParentComponent = ({ children }) => {
 
     const route = useRoute();
 
-    const pages_not_to_show_inactivity_modal = ['Login', 'OnBoarding', 'Pin', 'Sign Up']
+    const pages_not_to_show_inactivity_modal = ['Login', 'OnBoarding', 'Pin', 'Sign Up', 'Forgot Password']
 
     const [visible, setVisible] = useState(showInactivity)
     const [active, setActive] = useState(true);

@@ -12,6 +12,8 @@ import { NetworkContext } from "../../context/NetworkContext";
 import NetworkModal from "../../components/Modal/Network";
 import { useMutation } from "react-query";
 import { resetProfile } from "../../services/network";
+import { useDispatch } from "react-redux";
+import { setCurrentUserUserActionAsync } from "../../redux/store/user/user.actions";
 
 
 
@@ -34,6 +36,7 @@ const UpdateProfile = () => {
     const [visible, setVisible] = useState(false)
     const [msg, setMsg] = useState('')
 
+    const dispatch = useDispatch();
 
     const { isConnected } = useContext(NetworkContext)
 
@@ -41,6 +44,16 @@ const UpdateProfile = () => {
     const { isLoading, mutate } = useMutation(resetProfile, {
         onSuccess: data => {
             console.log("data?.data", data?.data)
+            if(data?.data?.flag == 1){
+                setType('verify')
+                setData(data?.data?.message)
+                setVisible(true)
+                dispatch(setCurrentUserUserActionAsync())
+            } else if(data?.data?.flag == 0){
+                setType('invalid')
+                setData(data?.data?.message)
+                setVisible(true)
+            }
         }
     })
 

@@ -15,6 +15,8 @@ import DocumentPicker from 'react-native-document-picker';
 import { uploadImage } from "../../services/network";
 import { setCurrentUserUserActionAsync } from "../../redux/store/user/user.actions";
 import { selectCurrentUser } from "../../redux/store/user/user.selector";
+import {launchImageLibrary} from 'react-native-image-picker';
+
 
 
 const Settings = ({ navigation }) => {
@@ -52,6 +54,14 @@ const Settings = ({ navigation }) => {
               type: res[0].type,
               name: res[0].name,
             };
+
+            // const result = await launchImageLibrary({
+            //     mediaType: 'photo',
+
+            // });
+
+            // console.log("result", result)
+
 
          
           
@@ -125,6 +135,11 @@ const Settings = ({ navigation }) => {
             name: 'Account Statement',
             text: 'Have your transactions sent to you',
             icon: 'chatbox-ellipses-outline'
+        },
+        {
+            name: 'Referral',
+            text: 'Copy your referral code and earn',
+            icon: 'person-add-outline'
         },
         {
             name: 'Logout',
@@ -238,6 +253,8 @@ const Settings = ({ navigation }) => {
                                         // navigation.navigate('Login')
                                     } else if (element.name == 'Account Statement') {
                                         navigation.navigate('Account Statement')
+                                    } else if(element.name == 'Referral'){
+                                        navigation.navigate('Referral')
                                     } else {
                                     navigation.navigate('Update settings', {
                                             type: element?.name

@@ -26,7 +26,7 @@ const SignUpValidationSchema = Yup.object().shape({
     first_name: Yup.string().required('First name is required'),
     last_name: Yup.string().required('Last name is required'),
     password: Yup.string().required('Password is required'),
-    refered_by: Yup.string(),
+    invite_code: Yup.string(),
     terms: Yup.boolean().required('You need to accept our terms and conditions')
 });
 
@@ -201,7 +201,7 @@ const SignUp = ({ navigation }) => {
                                 last_name: '',
                                 email_address: "",
                                 password: '',
-                                refered_by: '',
+                                invite_code: '',
                                 terms: accepted
                             }}
                             onSubmit={(values) => {
@@ -257,7 +257,7 @@ const SignUp = ({ navigation }) => {
                                     />
                                     <Field
                                         component={CustomInput}
-                                        name="refered_by"
+                                        name="invite_code"
                                         text='Refered By (Optional)'
                                         placeholder="Refered By (Promo code)"
                                     />

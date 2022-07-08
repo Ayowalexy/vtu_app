@@ -20,6 +20,7 @@ const LIGHT_ = require('../../assets/light_.png')
 const APP_UPDATE = require('../../assets/app.png')
 const ACCESS_DENIED = require('../../assets/denied.png')
 const ADD = require('../../assets/add.png')
+const REFER = require('../../assets/refer.png')
 
 
 export {
@@ -44,5 +45,6 @@ export {
     GOTV,
     APP_UPDATE,
     ACCESS_DENIED,
-    ADD
+    ADD,
+    REFER
 }
