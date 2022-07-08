@@ -77,7 +77,8 @@ const urls = {
     },
 
     AD: {
-        get_all_ads: `${baseUrl}/banner/index.php`
+        get_all_ads: `${baseUrl}/banner/index.php`,
+        get_promotion: `${baseUrl}/app/promotion.php`
     },
 
     RECHARGE: {

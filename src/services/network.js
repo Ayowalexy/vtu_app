@@ -780,6 +780,25 @@ const getAllVendors = async (data) => {
 }
 
 
+const getPromotion = async () => {
+  const token = await getToken();
+  const userId = await AsyncStorage.getItem('userData');
+  const id = JSON.parse(userId)?.id;
+  try {
+    const response = await axios.post(
+      urls.AD.get_promotion,
+      JSON.stringify({id}),
+      {
+        headers: { 'Content-Type': 'application/json' , Authorization: `Bearer ${token}`},
+      },
+    );
+    return response;
+  } catch (error) {
+    return error.response
+  }
+}
+
+
 
 
 
@@ -847,5 +866,6 @@ export {
   uploadImage,
   changePassword,
   getAllVendors,
-  accountStatement
+  accountStatement,
+  getPromotion
 }

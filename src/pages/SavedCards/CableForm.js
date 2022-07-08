@@ -87,7 +87,7 @@ const CableForm = ({navigation, route}) => {
         onSuccess: data => {
             console.log("data?.data?.result", data?.data)
             if (data?.data?.flag == 1) {
-                setResult(data?.data?.result)
+                setResult(data?.data?.data?.name)
             } else {
                 setType('invalid')
                 setVisible(true)
@@ -177,6 +177,8 @@ const CableForm = ({navigation, route}) => {
     }
 
 
+    console.log('result', result)
+
     const CustomInput = (props) => {
         const {
             field: { name, onBlur, onChange, value },
@@ -228,7 +230,7 @@ const CableForm = ({navigation, route}) => {
         const payload = {
             phone_number: decoder,
             operator_name: cableType,
-            name: result?.first_name?.concat(' ', result?.last_name) || result?.customer_name,
+            name: result?.first_name?.concat(' ', result?.last_name) || result?.customer_name || result,
             phonebook_type: "Cable",
             type: 'add',
             last_product: result?.primary_product_name,
@@ -351,7 +353,7 @@ const CableForm = ({navigation, route}) => {
                                                     component={CustomInput}
                                                     name="name"
                                                     text='Name'
-                                                    value={result?.first_name?.concat(' ', result?.last_name) || result?.customer_name}
+                                                    value={result?.first_name?.concat(' ', result?.last_name) || result?.customer_name || result}
                                                     editable={false}
                                                 />
 
@@ -367,7 +369,7 @@ const CableForm = ({navigation, route}) => {
                                 <TouchableOpacity
                                     disabled={values?.decoder_number?.length < 10 && true}
                                     onPress={() => {
-                                        if(Boolean(result?.first_name) || Boolean(result?.customer_name)){
+                                        if(Boolean(result?.first_name) || Boolean(result?.customer_name) || Boolean(result)){
                                             if (route?.params?.verified) {
                                                 handleSave(values?.decoder_number)
                                             } else {

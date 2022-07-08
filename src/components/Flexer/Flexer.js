@@ -90,13 +90,15 @@ export const Box = ({ w, h, f, r, children, ...otherProps }) => {
 
 
 
-export const Button = ({children, disabled = false, onPress}) => {
+export const Button = ({children, disabled = false, onPress, outline = false}) => {
     return (
         <TouchableOpacity disabled={disabled} onPress={onPress} >
             <Box
                 w='100%'
                 h={50}
-                backgroundColor={Colors.PRIMARY}
+                backgroundColor={outline ? Colors.WHITE : Colors.PRIMARY}
+                borderColor={outline ? Colors.PRIMARY : null}
+                borderWidth={outline ? 1 : 0}
                 r={10}
                 marginTop={30}
                 opacity={disabled ? 0.3 : 1}

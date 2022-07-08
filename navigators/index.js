@@ -118,15 +118,15 @@ const ParentComponent = ({ children }) => {
                 appState.current = nextAppState;
                 if (appState.current === 'active') {
                     d_1.current = Date.now()
-                    if (d_1.current - d_2.current > 10000) {
-                        console.log('Inactive for more than one minutes')
+                    if (d_1.current - d_2.current > 300000) {
+                        console.log('Inactive for more than 5 minutes')
 
                         navigation.navigate('Pin', {
                             page: 'Tabs',
                             prompt: true
                         })
                     } else {
-                        console.log('Active under 1 minutes')
+                        console.log('Active under 5 minutes')
                         
                     }
                 }

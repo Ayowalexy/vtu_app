@@ -15,7 +15,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { uploadImage } from "../../services/network";
 import { setCurrentUserUserActionAsync } from "../../redux/store/user/user.actions";
 import { selectCurrentUser } from "../../redux/store/user/user.selector";
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 
 
@@ -30,11 +30,11 @@ const Settings = ({ navigation }) => {
     console.log(user)
 
     useEffect(() => {
-        if(uri){
-            (async() => {
+        if (uri) {
+            (async () => {
                 console.log(uri)
-                const res = await uploadImage({image_path: uri})
-                if(res.status == 200){
+                const res = await uploadImage({ image_path: uri })
+                if (res.status == 200) {
                     dispatch(setCurrentUserUserActionAsync())
                 }
             })()
@@ -43,16 +43,16 @@ const Settings = ({ navigation }) => {
 
 
 
-    const pickImage = async() => {
+    const pickImage = async () => {
         try {
             const res = await DocumentPicker.pick({
-              type: [DocumentPicker.types.allFiles],
+                type: [DocumentPicker.types.allFiles],
             });
-      
+
             const blob = {
-              uri: res[0].uri,
-              type: res[0].type,
-              name: res[0].name,
+                uri: res[0].uri,
+                type: res[0].type,
+                name: res[0].name,
             };
 
             // const result = await launchImageLibrary({
@@ -63,38 +63,38 @@ const Settings = ({ navigation }) => {
             // console.log("result", result)
 
 
-         
-          
-                const formData = new FormData();
-        
-                let CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/namecoding-web-team/upload'
-                for (let i = 0; i < res.length; i++) {
-                    let file = res[i];
-                    formData.append("file", file);
-                    formData.append("upload_preset", "payrizone_passport");
-        
-                    fetch(CLOUDINARY_URL, {
-                        method: "POST",
-                        body: formData
+
+
+            const formData = new FormData();
+
+            let CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/namecoding-web-team/upload'
+            for (let i = 0; i < res.length; i++) {
+                let file = res[i];
+                formData.append("file", file);
+                formData.append("upload_preset", "payrizone_passport");
+
+                fetch(CLOUDINARY_URL, {
+                    method: "POST",
+                    body: formData
+                })
+                    .then((response) => {
+                        return response.json();
                     })
-                        .then((response) => {
-                            return response.json();
-                        })
-                        .then((data) => {
-                          console.log(data)
-                          setUri(data.url)
-                        })
-                        .catch(e => {
-                            console.log(e)
-                        })
-        
-                }
-        
-            
-      
+                    .then((data) => {
+                        console.log(data)
+                        setUri(data.url)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+
+            }
+
+
+
 
             // console.log(response)
-        } catch(e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -167,10 +167,10 @@ const Settings = ({ navigation }) => {
                     w={70}
                     h={70}
                     r={40}
-                    borderWidth={1}
+                    // borderWidth={1}
                     borderColor={Colors.DEFAULT}
                 >
-                    <Image
+                    {/* <Image
                         source={{
                             uri: uri || user?.picture
                         }}
@@ -180,7 +180,9 @@ const Settings = ({ navigation }) => {
                             borderRadius: 50
                         }}
                         resizeMode='cover'
-                    />
+                    /> */}
+
+                    <Icon name='md-person-circle-outline' size={70} color={Colors.DEFAULT} />
 
                     <TouchableOpacity
                         onPress={pickImage}
@@ -193,14 +195,14 @@ const Settings = ({ navigation }) => {
                         <Box
                             h={30}
                             w={30}
-                            backgroundColor={Colors.DEFAULT}
+                            // backgroundColor={Colors.DEFAULT}
                             r={30}
                         >
-                            <Icon
+                            {/* <Icon
                                 name='camera'
                                 size={20}
                                 color={Colors.WHITE}
-                            />
+                            /> */}
                         </Box>
                     </TouchableOpacity>
                 </Box>
@@ -253,10 +255,10 @@ const Settings = ({ navigation }) => {
                                         // navigation.navigate('Login')
                                     } else if (element.name == 'Account Statement') {
                                         navigation.navigate('Account Statement')
-                                    } else if(element.name == 'Referral'){
+                                    } else if (element.name == 'Referral') {
                                         navigation.navigate('Referral')
                                     } else {
-                                    navigation.navigate('Update settings', {
+                                        navigation.navigate('Update settings', {
                                             type: element?.name
                                         })
                                     }

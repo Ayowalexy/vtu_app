@@ -40,17 +40,17 @@ export const Confirm = ({ name = '', decoderNumber = '', usePackage = '', type =
                     <IIText type='B' color={Colors.DEFAULT}>
                         {
                             type == 'bank'
-                            ? (
+                                ? (
+                                    <>
+                                        {user?.account_number}
+                                    </>
+                                )
+                                :
                                 <>
-                                    {user?.account_number}
+                                    {decoderNumber}
                                 </>
-                            )
-                            :
-                            <>
-                                {decoderNumber}
-                            </>
-                            
-                            
+
+
                         }
                     </IIText>
                 </View>
@@ -67,13 +67,13 @@ export const Confirm = ({ name = '', decoderNumber = '', usePackage = '', type =
                         {
                             type == 'bank'
                                 ? (<>
-                                    {name}{"\n"}{}
+                                    {name}{"\n"}{ }
                                 </>)
 
-                                : 
+                                :
                                 (
                                     <>
-                                        { name }
+                                        {name}
                                     </>
                                 )
                         }
@@ -133,9 +133,16 @@ const CablesPayment = ({ route }) => {
     const [StartTimeswhatDoYouWantToDo, setStartTimesWhatDoYouWantToDo] = useState('Renew my current Bouquet')
 
 
+    console.log('route', route)
     const { isConnected } = useContext(NetworkContext)
 
     const rates = useSelector(selectSystemRates)
+
+    useEffect(() => {
+        if (route?.params?.product_id) {
+            setStarTimesId(route?.params?.product_id)
+        }
+    }, [route?.params?.product_id])
 
 
     const { isLoading, mutate } = useMutation(verifyMultiChoice, {
@@ -154,7 +161,7 @@ const CablesPayment = ({ route }) => {
 
     const StarTimesMutation = useMutation(verifyStartimes, {
         onSuccess: data => {
-            console.log(data?.data)
+            console.log('startimes', data?.data)
             if (data?.data?.flag == 1) {
                 setCard(data?.data?.data)
                 setAmount(data?.data?.data?.due_balance)
@@ -194,7 +201,7 @@ const CablesPayment = ({ route }) => {
 
     const payCablesMutation = useMutation(topupCable, {
         onSuccess: data => {
-            console.log("data?.data", data?.data)
+            console.log("data?.data top up", data?.data)
             if (data?.data?.flag == 1) {
 
                 console.log(data?.data?.result?.reference)
@@ -245,8 +252,13 @@ const CablesPayment = ({ route }) => {
             }
         } else if (
             multichoice.includes(data) ||
-            multichoice.includes(saved_data?.network)) {
+            multichoice.includes(saved_data?.network)
+            ) {
             if (meterNumber.length == 10) {
+                handleVerify()
+            }
+        } else if(data == 'SHOWMAX' || saved_data?.network == 'SHOWMAX'){
+            if(meterNumber.length == 11){
                 handleVerify()
             }
         }
@@ -373,12 +385,12 @@ const CablesPayment = ({ route }) => {
         const startimesPayload = {
             smart_no: meterNumber,
             is_multichoice: false,
-            bouquet_type: 'renew',
-            plan_id: productID,
+            bouquet_type: StartTimeswhatDoYouWantToDo == 'Renew my current Bouquet' ? 'renew' : 'change',
+            plan_id: StartTimeswhatDoYouWantToDo == 'Renew my current Bouquet' ? card?.current_plan : productID,
             module_id: cable?.module_id,
             startimes_id: startTimesID,
             decoder_type: "startimes",
-            beneficiary_name: confirmationData. beneficiary
+            beneficiary_name: confirmationData.beneficiary
 
         }
 
@@ -387,7 +399,7 @@ const CablesPayment = ({ route }) => {
             module_id: cable?.module_id,
             decoder_type: "multchoic",
             is_multichoice: true,
-            beneficiary_name: confirmationData. beneficiary,
+            beneficiary_name: confirmationData.beneficiary,
             bouquet_type: whatDoYouWantToDo == 'Renew my current Bouquet' ? 'renew' : "change",
 
         }
@@ -401,12 +413,14 @@ const CablesPayment = ({ route }) => {
             module_id: cable?.module_id,
             decoder_type: "multchoic",
             is_multichoice: true,
-            beneficiary_name: confirmationData. beneficiary,
+            beneficiary_name: confirmationData.beneficiary,
             bouquet_type: whatDoYouWantToDo == 'Renew my current Bouquet' ? 'renew' : "change",
 
         }
 
-        if (productType == 'StarTimes') {
+        if (productType == 'StarTimes' || saved_data?.network == 'StarTimes') {
+
+            console.log('Payload', startimesPayload)
             payCablesMutation.mutate(startimesPayload)
         } else {
             if (whatDoYouWantToDo == 'Renew my current Bouquet') {
@@ -561,11 +575,22 @@ const CablesPayment = ({ route }) => {
                     }
 
                     {
-                        productType == 'StarTimes' || saved_data?.network == 'StarTimes' ?
+                        productType == 'StarTimes'
+                            ||
+                            saved_data?.network == 'StarTimes'
+                            ||
+                            productType == 'DSTV'
+                            ||
+                            saved_data?.network == 'DSTV'
+                            ||
+                            productType == 'GOTV'
+                            ||
+                            saved_data == 'GOTV'
+                            ?
                             (
                                 <>
                                     <>
-                                        {/* <IIText
+                                        <IIText
                                             size={17}
                                             type='B'
                                             paddingTop={20}
@@ -619,7 +644,7 @@ const CablesPayment = ({ route }) => {
                                         <Box
                                             w='100%'
                                             borderBottomWidth={1}
-                                        /> */}
+                                        />
                                         <IIText
                                             size={17}
                                             type='B'
@@ -659,135 +684,46 @@ const CablesPayment = ({ route }) => {
                                 </>
                             )
 
-                            :
-
-                            (
-
+                            : (
                                 <>
-
                                     <IIText
                                         size={17}
                                         type='B'
-                                        paddingTop={20}
-                                        paddingBottom={20}
+                                        paddingTop={50}
 
                                     >
-                                        What do you want to do?</IIText>
-                                    <Tooltip
-                                        withPointer={false}
-                                        ref={tooltipRef}
-                                        backgroundColor="rgba(0,0,0,0)"
-                                        containerStyle={{
-                                            width: 300,
-                                            marginLeft: -100,
-
-                                        }}
-                                        popover={
-                                            <View style={styles.view}>
-                                                {
-                                                    ['Renew my current Bouquet', 'Change Bouquet']
-                                                        .map((element, idx) => (
-                                                            <Pressable
-                                                                key={idx}
-                                                                onPress={() => {
-                                                                    setWhatDoYouWantToDo(element)
-                                                                    if (element == 'Change Bouquet') {
-                                                                        setAmount('')
-                                                                    }
-                                                                    tooltipRef.current.toggleTooltip();
-                                                                }}
-                                                            >
-                                                                <IIText type='B'>{element}</IIText>
-                                                            </Pressable>
-                                                        ))
-                                                }
-
-
-                                            </View>
-                                        }
-                                    >
-                                        <IFlexer w='100%'>
-                                            <IIText type='B' opacity={0.4}>{whatDoYouWantToDo}</IIText>
-                                            <IIcon
-                                                name='ios-chevron-down-sharp'
-                                                size={20}
-                                                color={Colors.SEARCH}
-                                            />
-                                        </IFlexer>
-                                    </Tooltip>
-
-                                    <Box
-                                        w='100%'
-                                        borderBottomWidth={1}
+                                        Amount</IIText>
+                                    <Input
+                                        value={formatNumber(amount)}
+                                        onChange={setAmount}
+                                        marginTop={-60}
+                                        type='money'
+                                        keyboardType='number-pad'
+                                        p='Enter Amount'
+                                        editable={data == 'SHOWMAX' || saved_data?.network == 'SHOWMAX' ? false : true}
                                     />
 
+                                    <IView top={30}>
+                                        <Pressable
+                                            onPress={() => {
+                                                setShowBouquet(true)
+                                            }}
+                                        >
+                                            <IIText type='B' >
+                                                {
+                                                    bouquet.length ? bouquet : 'Select a Bouquet'
+                                                }
+                                            </IIText>
+                                            <Box
+                                                w='100%'
+                                                borderBottomWidth={1}
+                                            />
+                                        </Pressable>
 
-
-                                    {
-                                        whatDoYouWantToDo == 'Renew my current Bouquet' ?
-                                            (
-                                                <>
-                                                    <IIText
-                                                        size={17}
-                                                        type='B'
-                                                        paddingTop={50}
-
-                                                    >
-                                                        Amount</IIText>
-                                                    <Input
-                                                        value={formatNumber(Math.floor(Number(amount)))}
-                                                        onChange={setAmount}
-                                                        marginTop={-60}
-                                                        type='money'
-                                                        keyboardType='number-pad'
-                                                        p='0.00'
-                                                    />
-                                                </>
-                                            ) :
-
-                                            // <ChangeBouquet upgrades={card?.upgrades} />
-
-                                            (
-                                                <>
-                                                    <IIText
-                                                        size={17}
-                                                        type='B'
-                                                        paddingTop={50}
-
-                                                    >
-                                                        Amount</IIText>
-                                                    <Input
-                                                        value={formatNumber(amount)}
-                                                        onChange={setAmount}
-                                                        marginTop={-60}
-                                                        type='money'
-                                                        keyboardType='number-pad'
-                                                    />
-
-                                                    <IView top={30}>
-                                                        <Pressable
-                                                            onPress={() => {
-                                                                setShowBouquet(true)
-                                                            }}
-                                                        >
-                                                            <IIText type='B' >
-                                                                {
-                                                                    bouquet.length ? bouquet : 'Select a Bouquet'
-                                                                }
-                                                            </IIText>
-                                                            <Box
-                                                                w='100%'
-                                                                borderBottomWidth={1}
-                                                            />
-                                                        </Pressable>
-
-                                                    </IView>
-
-                                                </>
-                                            )
-                                    }
+                                    </IView>
                                 </>
                             )
+
                     }
 
                     <IIText type='B' paddingTop={20} color={Colors.DEFAULT} >

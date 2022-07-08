@@ -51,7 +51,7 @@ const Confirmation = ({ visible, setVisible, data, page, setConfirmed , verified
                                             element == 'beneficiary' && !data[element].length ? null : element
                                         }
                                     </IIText>
-                                    <IIText size={15} textAlign='right'>
+                                    <IIText width={200} size={15} textAlign='right'>
                                         {
                                             element == 'beneficiary' 
                                             ? (

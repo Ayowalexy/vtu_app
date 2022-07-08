@@ -3,12 +3,13 @@ import { Paystack } from 'react-native-paystack-webview';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { fundUser } from '../../services/network';
-import { selectCurrentUser } from '../../redux/store/user/user.selector';
+import { selectCurrentUser, selectSystemRates } from '../../redux/store/user/user.selector';
 import { useMutation } from 'react-query';
 
 const PayStack = ({ amount, setAmount, reference, setShowPayStack, setShowSuccess }) => {
 
   const user = useSelector(selectCurrentUser);
+  const rates = useSelector(selectSystemRates)
 
   const { mutate } = useMutation(fundUser, {
     onSuccess: data => {
@@ -20,7 +21,7 @@ const PayStack = ({ amount, setAmount, reference, setShowPayStack, setShowSucces
     <View style={{ flex: 1 }}>
       <Paystack
         refNumber={reference}
-        paystackKey="pk_test_28d2e0f6c806854b898be87d1d21f0759aa9520b"
+        paystackKey={rates?.service_fee?.paystack}
         amount={amount}
         billingEmail={user?.email_address}
         activityIndicatorColor="green"

@@ -17,7 +17,7 @@ const AppUpdate = ({ route , type}) => {
         <Modal
             visible={visible}
             onRequestClose={() => {
-                if (type == '0') {
+                if (type?.release_type == '0') {
                     setVisible(!visible)
                 } else {
                     setVisible(true)
@@ -47,7 +47,9 @@ const AppUpdate = ({ route , type}) => {
                     with new and interesting features added, click to download
                 </IIText>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => Linking.openURL(type?.paystore)}
+                >
                     <Box
                         w='100%'
                         h={50}
@@ -62,7 +64,7 @@ const AppUpdate = ({ route , type}) => {
                 </TouchableOpacity>
 
                 {
-                    type == '0'
+                    type?.release_type == '0'
                         ? (
                             <TouchableOpacity
                                 onPress={() => setVisible(false)}

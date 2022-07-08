@@ -55,7 +55,7 @@ const OnBoarding = () => {
                                 <TouchableOpacity style={styles.Touch}>
                                     <Icon name={element.icon} color={Colors.DEFAULT} size={23} />
                                 </TouchableOpacity>
-                                <IText type='SSM' styling={{textAlign: 'center'}}>{element.name}</IText>
+                                <IText type='SSM' styling={{textAlign: 'center', fontSize: 13}}>{element.name}</IText>
                             </View>
                         ))
                     }

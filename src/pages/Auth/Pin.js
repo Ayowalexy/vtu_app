@@ -45,9 +45,6 @@ const Pin = ({ verified, setVerified, route }) => {
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
 
-
-
-
     const { isLoading, mutate } = useMutation(setPin, {
         onSuccess: data => {
             console.log("data?.data", data?.data)

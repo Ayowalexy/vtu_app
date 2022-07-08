@@ -20,10 +20,11 @@ import NetworkModal from "../../components/Modal/Network";
 import { formatNumber } from "../../utils/formatter";
 import Clipboard from '@react-native-community/clipboard';
 import LogoutModal from "../../components/Modal/LogoutModal";
-import { notifications } from "../../services/network";
+import { getPromotion, notifications } from "../../services/network";
 import axios from "axios";
 import AppUpdate from "../AppUpdate/AppUpdate";
 import { appRelease } from "../../services/network";
+
 
 
 const Dashboard = ({ navigation, route }) => {
@@ -45,6 +46,7 @@ const Dashboard = ({ navigation, route }) => {
     const dispatch = useDispatch();
 
 
+
     const user = useSelector(selectCurrentUser)
     const services = useSelector(selectServices)
     const ads = useSelector(selectAllAds)
@@ -53,6 +55,13 @@ const Dashboard = ({ navigation, route }) => {
 
     useEffect(() => {
         balanceDateAndTime()
+    }, [])
+
+    useEffect(() => {
+        (async() => {
+            const promotions = await getPromotion();
+            setIsAdAvailable(promotions?.data?.result)
+        })()
     }, [])
 
     useEffect(() => {
@@ -89,7 +98,8 @@ const Dashboard = ({ navigation, route }) => {
             const currentVersion = '1.0.2';
             if ((update?.status == 200) && (currentVersion > update?.data?.app_version)) {
                 setShowUpdate(true)
-                setUpdateType(update?.data?.release_type)
+                console.log('update type', update?.data)
+                setUpdateType(update?.data)
                 // navigation.navigate('App Update', {
                 //     type: update?.data?.release_type
                 // })
@@ -120,23 +130,7 @@ const Dashboard = ({ navigation, route }) => {
             >
                 <IFlexer>
                     {
-                        user?.picture ?
-                            (
-                                <Image
-                                    source={{
-                                        uri: user?.picture
-                                    }}
-                                    style={{
-                                        width: 50,
-                                        height: 50,
-                                        borderRadius: 40,
-                                        borderWidth: 4,
-                                        borderColor: Colors.DEFAULT,
-                                        marginRight: 10
-                                    }}
-                                />
-                            )
-                            : <Icon name='md-person-circle-outline' size={50} color={Colors.DEFAULT} />
+                     <Icon name='md-person-circle-outline' size={50} color={Colors.DEFAULT} />
 
                     }
                     <IText marginLeft={10} size={20}>Hi, {user?.first_name}</IText>
@@ -464,7 +458,7 @@ const Dashboard = ({ navigation, route }) => {
                 {
                     !showUpdate && (
                         <>
-                            {isAdAvailable && <Promotion />}
+                            {Boolean(isAdAvailable) && <Promotion data={isAdAvailable} />}
                         </>
                     )
                 }

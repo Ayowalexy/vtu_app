@@ -58,7 +58,6 @@ export const setLoginActionAsync = (data) => {
                 dispatch(setRates(rates?.data))
                 dispatch(setBanks(banks?.data?.result))
                 dispatch(setAllAds(ads?.data))
-                // dispatch(setFingerprint(false))
             }
         } catch (e) {
             console.log(e)

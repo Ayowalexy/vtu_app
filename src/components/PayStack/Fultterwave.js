@@ -4,10 +4,13 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../redux/store/user/user.selector';
 import { PayWithFlutterwave } from 'flutterwave-react-native';
 import { Button } from '../Flexer/Flexer';
+import { selectSystemRates } from '../../redux/store/user/user.selector';
 
 const Flutterwave = ({ amount, reference, setAmount, setShowPayment, setShowSuccess, setPaymentChannel }) => {
 
     const user = useSelector(selectCurrentUser)
+    const rates = useSelector(selectSystemRates)
+
 
     useEffect(() => {
 
@@ -24,7 +27,7 @@ const Flutterwave = ({ amount, reference, setAmount, setShowPayment, setShowSucc
             }}
             options={{
                 tx_ref: reference,
-                authorization: 'FLWPUBK-6201177dc30414215b60aa97734c204f-X',
+                authorization: rates?.service_fee?.flutterwave,
                 customer: {
                     email: user?.email_address
                 },

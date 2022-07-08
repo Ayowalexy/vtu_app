@@ -24,7 +24,7 @@ import Confirmation from "../../components/Confirmation/Confirmation";
 import SwitchToggle from "react-native-switch-toggle";
 import Receipt from "../Wallet/Receipt";
 import AccountModal from "../../components/Modal/AccountModal";
-
+import { selectSystemRates } from "../../redux/store/user/user.selector";
 
 
 const TransferToOtherBanks = ({ route }) => {
@@ -46,6 +46,10 @@ const TransferToOtherBanks = ({ route }) => {
     const [receipt, showReceipt] = useState(false)
     const [receiptData, setReceiptdata] = useState({})
     const [index, setIndex] = useState(0)
+    const rates = useSelector(selectSystemRates)
+    const [price, setPrice] = useState(0)
+
+    console.log('rates', rates)
 
 
     const { isConnected } = useContext(NetworkContext)
@@ -96,6 +100,10 @@ const TransferToOtherBanks = ({ route }) => {
             }
         }
     })
+
+    useEffect(() => {
+        setPrice(((Number(rates?.service_fee?.other_bank_transfer_fee) / 100 ) * Number(amount) + Number(Math.floor(verifiedBank?.transaction_fee))))
+    }, [amount])
 
 
     useEffect(() => {
@@ -171,7 +179,8 @@ const TransferToOtherBanks = ({ route }) => {
             shortcode: selectedBank?.sortCode || banks[index]?.sortCode,
             account_number,
             type: 'transfer',
-            amount
+            amount,
+            transfer_to_other_bank_fee: price
         }
 
         console.log("payload", payload)
@@ -352,6 +361,7 @@ const TransferToOtherBanks = ({ route }) => {
                                                 <ITextInput
                                                     value={amount}
                                                     onChangeText={setAmount}
+                                                    keyboardType='numeric'
                                                     placeholder='Amount to transfer'
                                                 />
                                             </View>
@@ -359,7 +369,10 @@ const TransferToOtherBanks = ({ route }) => {
                                     </Box>
 
                                     <IIText type='B' paddingTop={20} color={Colors.DEFAULT} >
-                                        You will be charged a fee of ₦{verifiedBank?.transaction_fee} for this {"\n"} transaction
+                                        You will be charged a fee of ₦{ 
+
+                                        price
+                                        } for this {"\n"} transaction
                                     </IIText>
                                     <Box
                                         w='100%'
