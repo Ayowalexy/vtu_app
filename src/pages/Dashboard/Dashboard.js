@@ -84,18 +84,18 @@ const Dashboard = ({ navigation, route }) => {
 
 
     useEffect(() => {
-            (async () => {
-                const update = await appRelease()
-                const currentVersion = '1.0.2';
-                if ((update?.status == 200) && (currentVersion > update?.data?.app_version)) {
-                    setShowUpdate(true)
-                    setUpdateType(update?.data?.release_type)
-                    // navigation.navigate('App Update', {
-                    //     type: update?.data?.release_type
-                    // })
-                }
-            })()
-        
+        (async () => {
+            const update = await appRelease()
+            const currentVersion = '1.0.2';
+            if ((update?.status == 200) && (currentVersion > update?.data?.app_version)) {
+                setShowUpdate(true)
+                setUpdateType(update?.data?.release_type)
+                // navigation.navigate('App Update', {
+                //     type: update?.data?.release_type
+                // })
+            }
+        })()
+
     }, [])
 
 
@@ -111,7 +111,6 @@ const Dashboard = ({ navigation, route }) => {
     }
 
 
-
     return (
         <ParentComponent>
             <Setup />
@@ -120,8 +119,27 @@ const Dashboard = ({ navigation, route }) => {
                 padding={7}
             >
                 <IFlexer>
-                    <Icon name='md-person-circle-outline' size={50} color={Colors.DEFAULT} />
-                    <IText size={20}>Hi, {user?.first_name}</IText>
+                    {
+                        user?.picture ?
+                            (
+                                <Image
+                                    source={{
+                                        uri: user?.picture
+                                    }}
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: 40,
+                                        borderWidth: 4,
+                                        borderColor: Colors.DEFAULT,
+                                        marginRight: 10
+                                    }}
+                                />
+                            )
+                            : <Icon name='md-person-circle-outline' size={50} color={Colors.DEFAULT} />
+
+                    }
+                    <IText marginLeft={10} size={20}>Hi, {user?.first_name}</IText>
                 </IFlexer>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('Notifications')}
@@ -294,8 +312,8 @@ const Dashboard = ({ navigation, route }) => {
                                         to: 'Tabs'
                                     },
                                     {
-                                        name: 'Contact \nSupport',
-                                        icon: 'call-outline',
+                                        name: 'Help \nDesk',
+                                        icon: 'information-circle-outline',
                                         to: 'Update settings'
                                     },
                                     {
@@ -315,7 +333,7 @@ const Dashboard = ({ navigation, route }) => {
                                                 navigation.navigate(element.to, {
                                                     screen: 'Wallet'
                                                 })
-                                            } else if(element.name.includes('Support')) {
+                                            } else if (element.name.includes('Help')) {
                                                 navigation.navigate('Update settings', {
                                                     type: 'Support'
                                                 })
@@ -355,9 +373,10 @@ const Dashboard = ({ navigation, route }) => {
                                     } else if (element?.module_name == 'Data') {
                                         navigation.navigate('Data')
                                     } else if (element?.module_name == 'Internet') {
-                                        setType('not available')
-                                        setData('This service is not currently available, we are working to resolve this as soon as possible.')
-                                        setVisible(true)
+                                        navigation.navigate('Internet')
+                                        // setType('not available')
+                                        // setData('This service is not currently available, we are working to resolve this as soon as possible.')
+                                        // setVisible(true)
                                     }
                                     // navigation.navigate(element.to)
                                 }}

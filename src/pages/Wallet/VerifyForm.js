@@ -27,7 +27,6 @@ import { SvgXml } from "react-native-svg";
 
 
 const VerifyDepositSchema = Yup.object().shape({
-    bank_name: Yup.string().required('Please, enter your bank name'),
     amount_paid: Yup.string().required('Amount is required'),
     account_name: Yup.string().required("Please, enter your account name")
 
@@ -179,7 +178,8 @@ const VerifyForm = () => {
                             validationSchema={VerifyDepositSchema}
                             initialValues={{
                                 amount_paid: '',
-                                account_name: ''
+                                account_name: '',
+                                
 
                             }}
                             onSubmit={(values) => {
@@ -221,9 +221,8 @@ const VerifyForm = () => {
                                     <Field
                                         component={CustomInput}
                                         name='account_name'
-                                        placeholder='Account Number'
-                                        text='Account Number'
-                                        keyboardType='number-pad'
+                                        placeholder='Account Name'
+                                        text='Account Name'
 
                                     />
 
@@ -283,7 +282,7 @@ const VerifyForm = () => {
                                                             height={30}
                                                         />
                                                     </Box>
-                                                    <IIText paddingLeft={15} type='B'>
+                                                    <IIText width={200} paddingLeft={15} type='B'>
                                                         {element?.name}
                                                     </IIText>
                                                 </Box>

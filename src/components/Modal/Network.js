@@ -51,6 +51,8 @@ const NetworkModal = (props) => {
                                 ? 'Success'
                                 : type == 'delete'
                                 ? 'Success'
+                                : type == 'reset'
+                                ? "Successful"
                                 : 'Something went wrong'
                         }
                     </IIText>
@@ -83,6 +85,8 @@ const NetworkModal = (props) => {
                             ? data
                             : type == 'verify'
                             ? 'Your Details has been recorded'
+                            : type == 'reset'
+                            ? data
                             : 'Something went wrong, please try again'
 
                         }
@@ -101,6 +105,7 @@ const NetworkModal = (props) => {
                                 || type == 'fund'
                                 || type == 'delete'
                                 || type == 'verify'
+                                || type == 'reset'
                                 ?
                                 Colors.SUCCESS
                                 : Colors.PRIMARY
@@ -118,7 +123,7 @@ const NetworkModal = (props) => {
                                     navigation.navigate('Airtime Or Data')
                                 } else if(type == 'verified'){
                                     navigation.navigate('Tabs')
-                                } else if( type == 'change' || type == 'verify'){
+                                } else if( type == 'change' || type == 'verify' || type == 'reset'){
                                     navigation.goBack()
                                 }
                             }}

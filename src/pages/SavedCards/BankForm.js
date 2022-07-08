@@ -217,6 +217,7 @@ const BankForm = ({ navigation, route }) => {
                             value={account_number}
                             onChangeText={setAccountNumber}
                             text='Enter your account number'
+                            keyboardType='numeric'
                         />
 
 

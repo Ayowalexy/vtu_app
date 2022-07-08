@@ -9,11 +9,12 @@ const urls = {
         login: `${baseUrl}/user/login.php`,
         resend_otp: `${baseUrl}/user/resend_token.php`,
         verify_otp: `${baseUrl}/user/verify_email.php`,
-        biometric_login: `${baseUrl}/user/fingerprint_login.php`
+        biometric_login: `${baseUrl}/user/fingerprint_login.php`,
     },
 
     PROFILE: {
-        user_profile: `${baseUrl}/user/getprofile.php`
+        user_profile: `${baseUrl}/user/getprofile.php`,
+        upload_image: `${baseUrl}/user/image.php`
     },
 
     VERIFICATION: {
@@ -53,13 +54,16 @@ const urls = {
     BANKS: {
         get_banks: `${baseUrl}/bank/index.php`,
         payment_proof: `${baseUrl}/bank/proof.php`,
-        list_of_banks: `${baseUrl}/bank/other_banks.php`
+        list_of_banks: `${baseUrl}/bank/other_banks.php`,
+        statement_of_account: `${baseUrl}/app/account_statement.php`
     },
 
     RESET: {
         reset_pin: `${baseUrl}/user/pin.php`,
         reset_password: `${baseUrl}/user/change_password.php`,
-        reset_profile: `${baseUrl}user/update_profile.php`
+        reset_profile: `${baseUrl}user/update_profile.php`,
+        change_password: `${baseUrl}/user/reset_password.php`
+
     },
 
     HISTORY: {
@@ -93,6 +97,9 @@ const urls = {
     },
     VERSION: {
         check_version: `${baseUrl}/app/app_release.php`
+    },
+    VENDOR: {
+        get_all_vendors: `${baseUrl}/vendors/vendors.php`
     }
 
 }

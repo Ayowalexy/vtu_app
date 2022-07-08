@@ -77,10 +77,11 @@ const DataState = () => {
     } = usePopover();
 
 
+
     const {isLoading, mutate} = useMutation(setPin, {
         onSuccess: data => {
-            console.log("data?.data", data?.data)
-            if(data.status == 200){
+            console.log("data?.data -v", data?.data)
+            if(data?.data?.length){
                 setVouchers(data?.data)
             }
             
@@ -92,6 +93,7 @@ const DataState = () => {
             handleFetch()
         });
 
+        handleFetch()
         return unsubscribe;
     }, [navigation]);
 
@@ -135,7 +137,12 @@ const DataState = () => {
                     value={value}
                     onChangeText={setValue}
                 />
-                <VoucherCards data={vouhcers} />
+                
+                {
+                    vouhcers?.map((element, idx) => (
+                        <VoucherCards key={idx} data={element} />
+                    ))
+                }
                
                 <NetworkModal
                     type={type}

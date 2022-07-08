@@ -89,7 +89,7 @@ const Electricity = ({ navigation }) => {
             >
                 <Header>Electricity</Header>
             </Box>
-            <View style={{ padding: 20, paddingBottom: 250 }}>
+            <View style={{ padding: 20, paddingBottom: 120 }}>
                 <Search
                     value={search}
                     onChangeText={setSearch}
@@ -98,9 +98,7 @@ const Electricity = ({ navigation }) => {
                         handleFilter(search)
                     }}
                 />
-                <IText
-                    size={17}
-                    styling={styles.text}>Billers</IText>
+                
 
 
                 <ScrollView
@@ -125,7 +123,7 @@ const Electricity = ({ navigation }) => {
                                         h={60}
                                         w='100%'
                                         flexDirection='row'
-                                        borderBottomWidth={1}
+                                        borderBottomWidth={0.3}
                                     >
                                         <Image
                                             source={LIGHT_}

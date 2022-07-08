@@ -121,6 +121,7 @@ const ElectricityPayment = ({ route, navigation }) => {
     useEffect(() => {
         if (route?.params?.product_id) {
             set_product_id(route?.params?.product_id)
+            console.log('product is', route?.params?.product_id)
         }
     }, [route?.params?.product_id])
 
@@ -137,6 +138,10 @@ const ElectricityPayment = ({ route, navigation }) => {
                     ['Token']: data?.data?.result?.token
                 })
                 showReceipt(true)
+            } else if(data?.data?.flag == 0){
+                setType('invalid')
+                setData(data?.data?.message)
+                setVisible(true)
             }
         }
     })
@@ -157,10 +162,13 @@ const ElectricityPayment = ({ route, navigation }) => {
             product_id: productID,
             meter_no: meterNumber,
             amount: unFormatNumber(amount),
-            module_id: electricity?.module_id
+            module_id: electricity?.module_id,
+            operator_name: result?.product,
+            beneficiary: result?.customer_name,
+            auto_save: on ? 1 : 0
         }
 
-        console.log(payload)
+        console.log("payload", payload)
 
         payELectricityMutation.mutate(payload)
     }
@@ -195,7 +203,7 @@ const ElectricityPayment = ({ route, navigation }) => {
             setShowConfirmation(false)
             handleTopupElectricity()
         }
-    }, [route?.params?.verified])
+    }, [route?.params?.rand])
 
 
 
@@ -436,6 +444,7 @@ const ElectricityPayment = ({ route, navigation }) => {
                     <NetworkModal
                         type={type}
                         visible={visible}
+                        data={useData}
                         setVisible={setVisible}
                     />
                     {isLoading && (<Spinner

@@ -15,7 +15,7 @@ import Spinner from '../../components/Spinner/Spinner'
 import NetworkModal from "../../components/Modal/Network";
 import { useMutation } from "react-query";
 import { verifyMultiChoice, verifyStarTimes, getCables, getStartimes, getAllPhoneBooks } from "../../services/network";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { topupCable } from "../../services/network";
 import { Button } from "../../components/Flexer/Flexer";
 import { selectServices, selectSystemRates, selectCurrentUser } from "../../redux/store/user/user.selector";
@@ -24,8 +24,11 @@ import Receipt from "../Wallet/Receipt";
 import { verifyStartimes } from "../../services/network";
 import Confirmation from "../../components/Confirmation/Confirmation";
 
-export const Confirm = ({ name, decoderNumber, usePackage, type }) => {
+export const Confirm = ({ name = '', decoderNumber = '', usePackage = '', type = '' }) => {
     const user = useSelector(selectCurrentUser)
+
+    console.log(name, decoderNumber, usePackage)
+
     return (
         <View style={styles.flexer}>
             <View style={styles.flexer_2}>
@@ -43,7 +46,11 @@ export const Confirm = ({ name, decoderNumber, usePackage, type }) => {
                                 </>
                             )
                             :
-                            {decoderNumber}
+                            <>
+                                {decoderNumber}
+                            </>
+                            
+                            
                         }
                     </IIText>
                 </View>
@@ -60,10 +67,15 @@ export const Confirm = ({ name, decoderNumber, usePackage, type }) => {
                         {
                             type == 'bank'
                                 ? (<>
-                                    {name}{"\n"}{decoderNumber}
+                                    {name}{"\n"}{}
                                 </>)
 
-                                : { name }
+                                : 
+                                (
+                                    <>
+                                        { name }
+                                    </>
+                                )
                         }
                     </IIText>
                 </View>
@@ -92,7 +104,7 @@ const CablesPayment = ({ route }) => {
     const { data, saved_data = {}, product_id = '' } = route?.params;
     const [meterNumber, setMeterNumber] = useState('')
     const [whatDoYouWantToDo, setWhatDoYouWantToDo] = useState('Renew my current Bouquet');
-    const [amount, setAmount] = useState('')
+    const [amount, setAmount] = useState('0')
     const tooltipRef = useRef(null);
     const [history, setShowhistory] = useState(false)
     const [search, setSearch] = useState('')
@@ -310,7 +322,7 @@ const CablesPayment = ({ route }) => {
             ['Meter Number']: meterNumber,
             module_id: Number(cable.module_id),
             amount: amount,
-            operator: card?.current_plan || card?.primary_package,
+            operator: productType || saved_data?.network,
             beneficiary: on ? card?.name || card?.customer_name : ''
         }
 
@@ -366,6 +378,7 @@ const CablesPayment = ({ route }) => {
             module_id: cable?.module_id,
             startimes_id: startTimesID,
             decoder_type: "startimes",
+            beneficiary_name: confirmationData. beneficiary
 
         }
 
@@ -374,6 +387,7 @@ const CablesPayment = ({ route }) => {
             module_id: cable?.module_id,
             decoder_type: "multchoic",
             is_multichoice: true,
+            beneficiary_name: confirmationData. beneficiary,
             bouquet_type: whatDoYouWantToDo == 'Renew my current Bouquet' ? 'renew' : "change",
 
         }
@@ -387,6 +401,7 @@ const CablesPayment = ({ route }) => {
             module_id: cable?.module_id,
             decoder_type: "multchoic",
             is_multichoice: true,
+            beneficiary_name: confirmationData. beneficiary,
             bouquet_type: whatDoYouWantToDo == 'Renew my current Bouquet' ? 'renew' : "change",
 
         }
@@ -408,7 +423,7 @@ const CablesPayment = ({ route }) => {
             setShowConfirmation(false)
             handleTopupCable()
         }
-    }, [route?.params?.verified])
+    }, [route?.params?.rand])
 
     const handleStartimes = async () => {
         if (isConnected) {
@@ -539,8 +554,8 @@ const CablesPayment = ({ route }) => {
                         Boolean(card) && (
                             <Confirm
                                 decoderNumber={meterNumber}
-                                name={card?.name || card?.customer_name}
-                                usePackage={card?.current_plan || card?.primary_package}
+                                name={card?.name || card?.customer_name || card?.first_name?.concat(' ', card?.last_name)}
+                                usePackage={card?.current_plan || card?.primary_package || card?.primary_package_name}
                             />
                         )
                     }

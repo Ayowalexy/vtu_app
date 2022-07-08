@@ -120,7 +120,7 @@ const ReturningTransfer = ({ route }) => {
 
     return (
         <ParentComponent>
-            <Header>Fund your account</Header>
+            <Header>Transfer from your account</Header>
             <ScrollView>
                 <IView p={20}>
                     <Box

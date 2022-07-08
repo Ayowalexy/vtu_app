@@ -30,8 +30,8 @@ const AirtimeCard = ({ type, data }) => {
                             type == 'Electricity' || type == 'Banks' ?
                                 <>
                                     <Box
-                                        h={50}
-                                        w={50}
+                                        h={30}
+                                        w={30}
                                         borderWidth={1}
                                         borderColor='rgba(0,0,0,0.2)'
                                     >
@@ -70,7 +70,7 @@ const AirtimeCard = ({ type, data }) => {
                             alignItems='flex-start'
                             paddingLeft={10}
                         >
-                            <IIText type='L' size={16}>{data?.name}</IIText>
+                            <IIText type='L' size={12}>{data?.name?.length > 25 ? data?.name?.slice(0, 25).concat('...') : data?.name}</IIText>
                             <IIText type='B'>{
                                 type == 'Cable' ?
                                     `${data?.network}/${data?.number}`
@@ -127,7 +127,7 @@ const AirtimeCard = ({ type, data }) => {
                                     )
                                     : (
                                         <>
-                                            {data?.network}/{data?.number}
+                                            {data?.network || data?.saved_network}/{data?.number}
                                         </>
                                     )
                             }
@@ -173,7 +173,19 @@ const AirtimeCard = ({ type, data }) => {
                                     flexDirection='row'
                                 >
                                     <Icon name='share' color={Colors.DEFAULT} size={20} />
-                                    <IIText type='B'>Topup</IIText>
+                                    <IIText type='B'>
+                                        {
+                                            type == 'Electricity'
+                                            ? 'Buy'
+                                            : type == 'Banks'
+                                            ? 'Transfer'
+                                            : type == 'Cable'
+                                            ? 'Renew'
+                                            : type == 'Airtime'
+                                            ? 'TopUp'
+                                            : 'Topup'
+                                        }
+                                    </IIText>
                                 </Box>
                             </TouchableOpacity>
 

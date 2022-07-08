@@ -54,7 +54,8 @@ const Pin = ({ verified, setVerified, route }) => {
             if (data?.data?.flag == 1) {
                 dispatch(setCurrentUserUserActionAsync())
                 navigation.navigate(route?.params?.page, {
-                    verified: true
+                    verified: true,
+                    rand: Math.random()
                 })
             } else if (data?.data?.flag == 0) {
                 pinView.current.clearAll()

@@ -53,6 +53,11 @@ import ReturningTransfer from "./src/pages/Transfer/ReturningUser";
 import NotificationDetails from "./src/pages/Notifications/NotificationDetails";
 import AccountStatement from "./src/pages/Account-Statement/Account_Statement";
 import AppUpdate from "./src/pages/AppUpdate/AppUpdate";
+import BuyVoucher from "./src/pages/Voucher/Voucher";
+import Internet from "./src/pages/Dashboard/Internet";
+import ForgotPassword from "./src/pages/Auth/ForgetPassword";
+import VoucherProfile from "./src/pages/Voucher/VoucherProfile";
+import BuyFrom from "./src/pages/Voucher/BuyFrom";
 
 
 import Tabs from "./navigators/Tabs";
@@ -113,6 +118,7 @@ const App = () => {
                   <Stack.Screen name="OnBoarding" component={OnBoarding} />
                   <Stack.Screen name='Login' component={Login} />
                   <Stack.Screen name='Sign Up' component={SignUp} />
+                  <Stack.Screen name='Forgot Password' component={ForgotPassword} />
                 </Stack.Group>
                 <Stack.Group>
                   <Stack.Screen name='Email Verify' component={EmailVerify} />
@@ -129,6 +135,7 @@ const App = () => {
                     <Stack.Screen name='Notifications' component={Notfications} />
                     <Stack.Screen name='Notification Details' component={NotificationDetails} />
                     <Stack.Screen name='Account Statement' component={AccountStatement} />
+                    <Stack.Screen name='Internet' component={Internet} />
                   </Stack.Group>
                   <Stack.Group>
                     <Stack.Screen name='Airtime' component={Airtime} />
@@ -170,6 +177,11 @@ const App = () => {
                 </Stack.Group>
                 <Stack.Group>
                   <Stack.Screen name='App Update' component={AppUpdate} />
+                </Stack.Group>
+                <Stack.Group>
+                  <Stack.Screen name='Buy Voucher' component={BuyVoucher} />
+                  <Stack.Screen name='Voucher Profile' component={VoucherProfile} />
+                  <Stack.Screen name='Buy From' component={BuyFrom} />
                 </Stack.Group>
               </Stack.Navigator>
             </NavigationContainer>

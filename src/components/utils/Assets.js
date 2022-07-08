@@ -19,6 +19,7 @@ const STARTIMES = require('../../assets/st.jpeg')
 const LIGHT_ = require('../../assets/light_.png')
 const APP_UPDATE = require('../../assets/app.png')
 const ACCESS_DENIED = require('../../assets/denied.png')
+const ADD = require('../../assets/add.png')
 
 
 export {
@@ -42,5 +43,6 @@ export {
     LIGHT_,
     GOTV,
     APP_UPDATE,
-    ACCESS_DENIED
+    ACCESS_DENIED,
+    ADD
 }

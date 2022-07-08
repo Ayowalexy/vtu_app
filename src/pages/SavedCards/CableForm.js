@@ -4,7 +4,7 @@ import { ScrollView } from "react-native";
 import ParentComponent from "../../../navigators";
 import { Header } from "../../components/Flexer/Flexer";
 import FormView from "../../components/FormView/FormView";
-import { TextInput, View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import { TextInput, View, Text, StyleSheet, Pressable, TouchableOpacity, Image } from "react-native";
 import { Formik, Field } from "formik";
 import * as Yup from 'yup';
 import { Colors } from "../../components/utils/colors";
@@ -23,7 +23,7 @@ import { useMutation } from "react-query";
 import { verifyMultiChoice, verifyStarTimes } from "../../services/network";
 import Animated, { SlideInLeft, Layout } from "react-native-reanimated";
 import { getAllPhoneBooks, getCables } from "../../services/network";
-
+import { DSTV, GOTV, STARTIMES } from "../../components/utils/Assets";
 
 const PhoneSchema = Yup.object().shape({
     decoder_number: Yup.string().required("Please, enter decoder number")
@@ -276,13 +276,37 @@ const CableForm = ({navigation, route}) => {
                                                 ['DSTV', 'GOTV', 'StarTimes']
                                                     .map((element, idx) => (
                                                         <Pressable
+                                                            style={{
+                                                                display: 'flex',
+                                                                flexDirection: 'row',
+                                                                paddingTop: 5
+                                                            }}
                                                             key={idx}
                                                             onPress={() => {
                                                                 setCableType(element)
                                                                 tooltipRef.current.toggleTooltip();
                                                             }}
                                                         >
-                                                            <IIText type='B'>{element}</IIText>
+                                                            <Image
+                                                                source={
+                                                                    element == 'DSTV'
+                                                                    ? DSTV
+                                                                    : element == 'GOTV'
+                                                                    ? GOTV
+                                                                    : element == 'StarTimes'
+                                                                    ? STARTIMES
+                                                                    : null
+                                                                }
+
+                                                                style={{
+                                                                    width: 30,
+                                                                    height: 30,
+                                                                    borderRadius: 20,
+                                                                    marginBottom: 10
+                                                                }}
+                                                                resizeMode='contain'
+                                                            />
+                                                            <IIText paddingLeft={10} type='B'>{element}</IIText>
                                                         </Pressable>
                                                     ))
                                             }
@@ -405,7 +429,7 @@ const styles = StyleSheet.create({
         width: 200,
         backgroundColor: Colors.WHITE,
         elevation: 20,
-        height: 120,
+        height: 150,
         // marginRight: 30,
         // marginTop: 20,
         position: 'absolute',

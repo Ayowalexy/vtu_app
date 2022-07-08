@@ -365,6 +365,25 @@ const resetPassword = async (data) => {
   }
 }
 
+const changePassword = async (data) => {
+  const token = await getToken();
+  const userId = await AsyncStorage.getItem('userData');
+  const id = JSON.parse(userId)?.id;
+  try {
+    const response = await axios.post(
+      urls.RESET.change_password,
+      JSON.stringify({ ...data, id}),
+      {
+        headers: { 'Content-Type': 'application/json' , Authorization: `Bearer ${token}`},
+      },
+    );
+    return response;
+  } catch (error) {
+    return error.response
+  }
+}
+
+
 
 
 
@@ -576,10 +595,31 @@ const topupElectricity = async (data) => {
   const userId = await AsyncStorage.getItem('userData');
   const id = JSON.parse(userId)?.id;
 
-  console.log({...data, id})
+  console.log('sending', {...data, id})
   try {
     const response = await axios.post(
       urls.FUND.pay_electricity,
+      JSON.stringify({...data, id}),
+      {
+        headers: { 'Content-Type': 'application/json' , Authorization: `Bearer ${token}`},
+      },
+    );
+    return response;
+  } catch (error) {
+    return error.response
+  }
+}
+
+
+const accountStatement = async (data) => {
+  const token = await getToken();
+  const userId = await AsyncStorage.getItem('userData');
+  const id = JSON.parse(userId)?.id;
+
+  console.log('sending', {...data, id})
+  try {
+    const response = await axios.post(
+      urls.BANKS.statement_of_account,
       JSON.stringify({...data, id}),
       {
         headers: { 'Content-Type': 'application/json' , Authorization: `Bearer ${token}`},
@@ -702,6 +742,48 @@ const appRelease = async (data) => {
 
 
 
+const uploadImage = async (data) => {
+  const token = await getToken();
+  const userId = await AsyncStorage.getItem('userData');
+  const id = JSON.parse(userId)?.id;
+  try {
+    const response = await axios.post(
+      urls.PROFILE.upload_image,
+      JSON.stringify({...data, id}),
+      {
+        headers: { 'Content-Type': 'application/json' , Authorization: `Bearer ${token}`},
+      },
+    );
+    return response;
+  } catch (error) {
+    return error.response
+  }
+}
+
+
+const getAllVendors = async (data) => {
+  const token = await getToken();
+  const userId = await AsyncStorage.getItem('userData');
+  const id = JSON.parse(userId)?.id;
+  try {
+    const response = await axios.post(
+      urls.VENDOR.get_all_vendors,
+      JSON.stringify({...data,id}),
+      {
+        headers: { 'Content-Type': 'application/json' , Authorization: `Bearer ${token}`},
+      },
+    );
+    return response;
+  } catch (error) {
+    return error.response
+  }
+}
+
+
+
+
+
+
 
 
 
@@ -761,5 +843,9 @@ export {
   notifications,
   verifyStartimes,
   listOfBanks,
-  appRelease
+  appRelease,
+  uploadImage,
+  changePassword,
+  getAllVendors,
+  accountStatement
 }

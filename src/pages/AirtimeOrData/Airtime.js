@@ -66,7 +66,6 @@ const Airtime = ({ navigation, route }) => {
 
     const { isLoading, mutate } = useMutation(fundAirtimeAndData, {
         onSuccess: data => {
-
             console.log('airtime res', data?.data)
             if (data?.data?.flag == 1) {
                 setReceiptdata({
@@ -89,7 +88,7 @@ const Airtime = ({ navigation, route }) => {
     const hanldeVerifyNumberMutation = useMutation(getAllPhoneBooks, {
         onSuccess: data => {
             if (data?.data?.flag == 1) {
-
+                console.log('res', data?.data)
                 setVerifiedNumber(data?.data?.result?.network)
                 setNetwork(data?.data?.result)
                 reduceAnim()
@@ -183,21 +182,24 @@ const Airtime = ({ navigation, route }) => {
         }
 
         setMsg('Recharging you number, please wait...')
-        console.log({
+        console.log( 'airtime',{
             ...confirmationData,
             amount: Number(amount) + Number(rates?.service_fee?.airtime_fee),
             type: 'airtime',
-            name: beneficiaryName ? beneficiaryName : user?.first_name,
-            fee: rates?.service_fee?.airtime_fee
+            beneficiary: beneficiaryName ? beneficiaryName : phoneNumber,
+            fee: rates?.service_fee?.airtime_fee,
+            auto_save: on ? 1 : 0,
+            product_id: network?.product_id
 
         })
         mutate({
             ...confirmationData,
             amount: Number(amount) + Number(rates?.service_fee?.airtime_fee),
             type: 'airtime',
-            name: beneficiaryName ? beneficiaryName : user?.first_name,
-            fee: rates?.service_fee?.airtime_fee
-
+            beneficiary: beneficiaryName ? beneficiaryName : phoneNumber,
+            fee: rates?.service_fee?.airtime_fee,
+            auto_save: on ? 1 : 0,
+            product_id: network?.product_id
         })
         setConfirmed(false)
     }
@@ -214,7 +216,7 @@ const Airtime = ({ navigation, route }) => {
             phone: phoneNumber,
             module_id: Number(airtime.module_id),
             amount: amount,
-            operator: network,
+            operator: verifiedNumber,
             beneficiary: on ? beneficiaryName : ''
         }
 
@@ -228,7 +230,7 @@ const Airtime = ({ navigation, route }) => {
             setShowConfirmation(false)
             handPayment()
         }
-    }, [route?.params?.verified])
+    }, [route?.params?.rand])
 
 
 
@@ -272,7 +274,7 @@ const Airtime = ({ navigation, route }) => {
                                             style={[style.img, {
                                                 borderWidth: 1,
                                                 borderColor: element.name == network ? Colors.DEFAULT : null,
-                                               opacity: element?.name == verifiedNumber?.network ? 1 : 0.1
+                                               opacity: element?.name == verifiedNumber ? 1 : 0.1
                                             }]}
                                             source={element.img}
                                         />
@@ -480,7 +482,7 @@ const Airtime = ({ navigation, route }) => {
                         >
                             <IIText type='B' color={Colors.DEFAULT} size={17}>
                                 {
-                                    route?.params?.verified ? 'NEXT' : 'VERIFY'
+                                    route?.params?.verified ? 'NEXT' : 'CONTINUE'
                                 }
                             </IIText>
                         </Box>

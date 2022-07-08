@@ -12,7 +12,7 @@ const Search = ({ value, onChangeText, color, top, placeHolder, ...otherProps })
             onChangeText={onChangeText}
             placeholderTextColor={Colors.DEFAULT}
             style={[styles.box, {
-                    backgroundColor: color ? color : Colors.WHITE,
+                    backgroundColor: color ? x : Colors.WHITE,
                     elevation: color ? null : 1,
                     marginTop: top
                 }]}
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
         // backgroundColor: Colors.SEARCH,
         height: 50,
         paddingLeft: 10,
+        color: Colors.DEFAULT
     }
 })
 

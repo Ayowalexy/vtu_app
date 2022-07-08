@@ -96,9 +96,9 @@ const Notfications = ({ navigation }) => {
                             w={50}
                         >
                             <Icon size={30} name={
-                                data?.n_status ? 'mail-sharp' : 'mail-outline'
+                                data?.n_status == 1 ? 'mail-sharp' : 'mail-outline'
                             } color={
-                                data?.n_status ? Colors.ASH : Colors.ERROR
+                                data?.n_status  == 1? Colors.ASH : Colors.ERROR
                             } />
 
                         </Box>
@@ -108,9 +108,9 @@ const Notfications = ({ navigation }) => {
                     </Box>
 
                     <Icon size={30} name={
-                        data?.n_status ? 'checkmark-done-circle' : 'checkmark-done-circle-outline'
+                        data?.n_status == 1 ? 'checkmark-done-circle' : 'checkmark-done-circle-outline'
                     } color={
-                        data?.n_status ? Colors.ASH : Colors.ERROR
+                        data?.n_status == 1 ? Colors.ASH : Colors.ERROR
                     } />
                 </Box>
             </TouchableOpacity>

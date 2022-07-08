@@ -113,7 +113,7 @@ const SavedNumbers = ({ navigation }) => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            if (route.name == 'Airtime & Data') {
+            if (route.name == 'Numbers') {
                 handleFetch()
             }
         });

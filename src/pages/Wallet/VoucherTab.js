@@ -64,7 +64,10 @@ const TabBar = () => {
 
                             {/*  */}
                             <TouchableOpacity
-
+                                onPress={() => {
+                                    closePopover()
+                                    navigation.navigate('Buy Voucher')
+                                }}
                             >
                                 <Box
                                     flexDirection='row'

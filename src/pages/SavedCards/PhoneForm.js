@@ -85,8 +85,10 @@ const PhoneForm = ({ navigation, route }) => {
             phonebook_type: "Number",
             type: 'add',
             last_product: null,
-            expiry_date: null
+            expiry_date: null,
         }
+
+        console.log('saving payload', payload)
 
         if (isConnected) {
             setType('internet')

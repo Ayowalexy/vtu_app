@@ -19,7 +19,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import NetworkModal from "../../components/Modal/Network";
 import { NetworkContext } from "../../context/NetworkContext";
 import { useMutation } from "react-query";
-
+import { accountStatement } from "../../services/network";
 
 const AccountStatement = () => {
     const [date, setDate] = useState(new Date())
@@ -36,6 +36,16 @@ const AccountStatement = () => {
     const [data, setData] = useState('')
 
 
+    useEffect(() => {
+        set_email_address(user?.email_address)
+    }, [])
+
+    const {isLoading, mutate} = useMutation(accountStatement, {
+        onSuccess: data => {
+            console.log("data?.data", data?.data)
+        }
+    })
+
 
     const handleSubmit = () => {
         if (isConnected) {
@@ -45,13 +55,14 @@ const AccountStatement = () => {
         }
 
         setMsg('Fetching your statement, Please wait....')
+        const payload = {
+            end_date: end_date,
+            start_date: date,
+            account_number: account,
+            email: email_addres
+        }
 
-        // const payload = {
-        //     username: values.email,
-        //     password: values.password
-        // }
-
-        // mutate(payload)
+        mutate(payload)
     }
 
     return (
@@ -167,7 +178,7 @@ const AccountStatement = () => {
                     data={data}
                     setVisible={setVisible}
                 />
-                {false && (<Spinner
+                {isLoading && (<Spinner
                     loading={msg}
                 />)}
         </ParentComponent>

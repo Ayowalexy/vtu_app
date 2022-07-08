@@ -39,6 +39,7 @@ const ParentComponent = ({ children }) => {
     const [value, setValue] = useState('')
     const val = useRef()
     const [error, setError] = useState(false)
+    const [hide, setHide] = useState(false)
     const showRef = useRef(false)
 
     const { isLoading, mutate } = useMutation(setPin, {
@@ -62,6 +63,7 @@ const ParentComponent = ({ children }) => {
         });
         return () => removeNetInfoSubscription();
     }, []);
+
 
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -116,7 +118,7 @@ const ParentComponent = ({ children }) => {
                 appState.current = nextAppState;
                 if (appState.current === 'active') {
                     d_1.current = Date.now()
-                    if (d_1.current - d_2.current > 3000) {
+                    if (d_1.current - d_2.current > 10000) {
                         console.log('Inactive for more than one minutes')
 
                         navigation.navigate('Pin', {

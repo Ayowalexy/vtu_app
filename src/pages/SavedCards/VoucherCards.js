@@ -29,11 +29,13 @@ const VoucherCards = ({ data }) => {
 
     ];
 
+
     useEffect(() => {
 
         let shape = [];
-        if (data?.length) {
-            for (let e of data) {
+        let arr = [data]
+        if (arr?.length) {
+            for (let e of arr) {
                 shape.push({
                     title: e?.pin,
                     body: JSON.stringify({
@@ -62,6 +64,7 @@ const VoucherCards = ({ data }) => {
     const _renderHeader = (section, index, isActive, sections) => {
 
         const useData = JSON.parse(section?.body)
+        console.log(useData)
 
         return (
             <Animatable.View
@@ -103,9 +106,7 @@ const VoucherCards = ({ data }) => {
                                 PIN: <IIText type='B'>{section?.title}</IIText>
                             </IIText>
 
-                            <IIText size={13} type='L' >
-                                Date: <IIText type='B'>{useData?.Date?.split(' ')[0]}</IIText>
-                            </IIText>
+
 
 
 
@@ -184,6 +185,9 @@ const VoucherCards = ({ data }) => {
 
                                     <IIText size={13} type='L' >
                                         Used By: <IIText type='B'>{useData?.['Used By']}</IIText>
+                                    </IIText>
+                                    <IIText size={13} type='L' >
+                                        Date: <IIText type='B'>{useData?.Date?.split(' ')[0]}</IIText>
                                     </IIText>
 
 

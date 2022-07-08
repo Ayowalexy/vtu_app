@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { ScrollView, View, Text, TouchableOpacity, Dimensions, LogBox, TextInput, StyleSheet, Image } from "react-native";
 import { IIText } from "../../components/Text/Text";
 import ParentComponent from "../../../navigators";
@@ -17,7 +17,7 @@ import { NetworkContext } from "../../context/NetworkContext";
 import NetworkModal from "../../components/Modal/Network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectFingerprint } from "../../redux/store/user/user.selector";
+import { selectFingerprint, selectCurrentUser } from "../../redux/store/user/user.selector";
 import { setAllTicketsActionsAsync } from "../../redux/store/support/support.actions";
 import { setCurrentUserUserActionAsync, setLoginActionAsync } from '../../redux/store/user/user.actions'
 
@@ -106,8 +106,18 @@ const Login = ({ navigation }) => {
     const { isConnected } = useContext(NetworkContext)
     const dispatch = useDispatch();
     const fingerprintState = useSelector(selectFingerprint)
+    const user = useSelector(selectCurrentUser)
+    const [newUser, setnNewUser] = useState(false)
 
     console.log('finger print', fingerprintState)
+
+    useEffect(() => {
+        if (user?.email_address) {
+            setnNewUser(true)
+        } else {
+            setnNewUser(false)
+        }
+    }, [])
 
     const { isLoading, mutate } = useMutation(login, {
         onSuccess: async data => {
@@ -184,7 +194,7 @@ const Login = ({ navigation }) => {
                                 validationSchema={loginSchema}
                                 initialValues={{
 
-                                    email: "",
+                                    email: user?.email_address || '',
                                     password: '',
 
                                 }}
@@ -193,12 +203,24 @@ const Login = ({ navigation }) => {
                                 }}>
                                 {({ handleSubmit, isValid, values, setValues }) => (
                                     <>
+                                        {
+                                            newUser && (
+                                                <>
+                                                    <IIText type='L' textAlign='center' size={16} paddingTop={40}>{user?.first_name.concat(' ', user?.last_name)}</IIText>
+                                                    <IIText textAlign='center' type='B'>Welcome back, sign in</IIText>
+                                                </>
+                                            )
+                                        }
 
-                                        <Field
-                                            component={CustomInput}
-                                            name="email"
-                                            placeholder="Email / Phone"
-                                        />
+                                        {
+                                            !newUser && (
+                                                <Field
+                                                    component={CustomInput}
+                                                    name="email"
+                                                    placeholder="Email / Phone"
+                                                />
+                                            )
+                                        }
 
                                         <Field
                                             component={CustomInput}
@@ -210,7 +232,9 @@ const Login = ({ navigation }) => {
                                             justifyContent='flex-end'
                                             marginTop={20}
                                         >
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => navigation.navigate('Forgot Password')}
+                                            >
                                                 <IIText
                                                     type='B'
                                                     size={13}
@@ -278,20 +302,39 @@ const Login = ({ navigation }) => {
 
 
 
-                    <Box
-                        flexDirection='row'
-                        marginTop={10}
-                        marginBottom={30}
-                    >
-                        <IIText type='B'>New User? </IIText>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate('Sign Up')
-                            }}
-                        >
-                            <IIText type='L' color={Colors.PRIMARY} marginLeft={10}>SignUp</IIText>
-                        </TouchableOpacity>
-                    </Box>
+                    {
+                        newUser ?
+                            (
+                                <>
+                                    <TouchableOpacity
+                                        onPress={() => setnNewUser(!newUser)} 
+                                    >
+                                        <IIText paddingTop={30} textAlign='center' type='B'>This is not me? {' '}
+                                            <IIText color={Colors.PRIMARY} type='L'>Sign out</IIText>
+                                        </IIText>
+                                    </TouchableOpacity>
+                                </>
+                            )
+                            :
+                            (
+                                <>
+                                    <Box
+                                        flexDirection='row'
+                                        marginTop={10}
+                                        marginBottom={30}
+                                    >
+                                        <IIText type='B'>New User? </IIText>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                navigation.navigate('Sign Up')
+                                            }}
+                                        >
+                                            <IIText type='L' color={Colors.PRIMARY} marginLeft={10}>SignUp</IIText>
+                                        </TouchableOpacity>
+                                    </Box>
+                                </>
+                            )
+                    }
                 </IView>
                 <NetworkModal
                     type={type}

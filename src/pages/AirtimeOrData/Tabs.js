@@ -71,7 +71,7 @@ const Tabs = ({ state, descriptors, navigation, position }) => {
                                     backgroundColor={Colors.PRIMARY_FADED}
                                 >
                                     <Icon name={
-                                        label == 'Airtime & Data'
+                                        label == 'Numbers'
                                         ? 'phone-portrait-outline'
                                         : label == 'Cables TV'
                                         ? 'ios-tv-outline'
@@ -99,7 +99,7 @@ const AirtimeAndBillsTab = ({initialRouteName}) => {
             initialRouteName={initialRouteName}
             tabBar={props => <Tabs {...props} />}
         >
-            <Tab.Screen name="Airtime & Data" component={SavedNumbers} />
+            <Tab.Screen name="Numbers" component={SavedNumbers} />
             <Tab.Screen name="Cables TV" component={SavedBills} />
             <Tab.Screen name="Meters" component={SavedElectricity} />
             <Tab.Screen name="Banks" component={SavedBanks} />

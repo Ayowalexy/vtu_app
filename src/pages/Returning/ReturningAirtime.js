@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import IText, { IIText } from "../../components/Text/Text";
 import { Image, ScrollView, TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
 import FLexer, { IIcon, IView, Box, IFlexer } from "../../components/Flexer/Flexer";
@@ -7,22 +7,162 @@ import GoBack from "../../components/GoBack/GoBack";
 import Input from "../../components/Input/Input";
 import { Header } from "../../components/Flexer/Flexer";
 import ParentComponent from "../../../navigators";
+import { useSelector } from "react-redux";
+import Confirmation from "../../components/Confirmation/Confirmation";
+import { selectServices } from "../../redux/store/user/user.selector";
+import Receipt from "../Wallet/Receipt";
+import { useMutation } from "react-query";
+import Spinner from "../../components/Spinner/Spinner";
+import { fundAirtimeAndData } from "../../services/network";
+import NetworkModal from "../../components/Modal/Network";
+import { NetworkContext } from "../../context/NetworkContext";
+import { selectSystemRates } from "../../redux/store/user/user.selector";
 import { AIRTEL_LOGO, GLO_LOGO, MTN_LOGO, NINE_MOBILE } from "../../components/utils/Assets";
-
+import { getAllPhoneBooks } from "../../services/network";
 
 const ReturningAirtime = ({ navigation, route }) => {
     const [network, setNetwork] = useState('')
     const [amount, setAmount] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
-    const { number, saved_network, name } = route?.params?.data;
+    const services = useSelector(selectServices)
+    const [confirmationData, setConfirmationData] = useState('')
+    const [showConfirmation, setShowConfirmation] = useState(false)
+    const [receipt, showReceipt] = useState(false)
+    const [receiptData, setReceiptdata] = useState('')
+    const rates = useSelector(selectSystemRates)
+    const [type, setType] = useState('')
+    const [data, setData] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [msg, setMsg] = useState('')
+    const { isConnected } = useContext(NetworkContext)
+    const [number, setNumber] = useState('')
+    const [saved_network, setSaved_network] = useState('')
+    const [name, setName] = useState('')
+
 
     useEffect(() => {
-        setPhoneNumber(number)
-    }, [])
+        // const { number, saved_network, name } = route?.params?.data;
+
+        if (route?.params?.data?.number) {
+            setNumber(route?.params?.data?.number)
+            setSaved_network(route?.params?.data?.saved_network)
+            setName(route?.params?.data?.name)
+        }
+
+    }, [route?.params?.data?.number])
+
+
+    const { isLoading, mutate } = useMutation(fundAirtimeAndData, {
+        onSuccess: data => {
+            console.log('airtime res', data?.data)
+            if (data?.data?.flag == 1) {
+                setReceiptdata({
+                    method: 'Wallet',
+                    ['Phone Number']: phoneNumber,
+                    type: 'Airtime'
+                })
+                showReceipt(true)
+
+            } else if (data?.data?.flag == 0) {
+                setType('invalid')
+                setData(data?.data?.message)
+                setVisible(true)
+            }
+        }
+    })
+
+    const hanldeVerifyNumberMutation = useMutation(getAllPhoneBooks, {
+        onSuccess: data => {
+            if (data?.data?.flag == 1) {
+                console.log('res', data?.data)
+                setNetwork(data?.data?.result)
+            } else {
+                setType('invalid')
+                setVisible(true)
+            }
+        }
+    })
+
+
+    const handleVerify = (number) => {
+
+        if (isConnected) {
+            setType('internet')
+            setVisible(true)
+            return;
+        }
+
+        setMsg('Verifying your number, please wait...')
+        const filter = services.find(element => element.module_name == 'Airtime')
+        const payload = {
+            type: 'verify',
+            phone_number: number,
+            module_id: Number(filter.module_id),
+        }
+
+        hanldeVerifyNumberMutation.mutate(payload)
+    }
+
+
+
+
+    useEffect(() => {
+        if (route?.params?.data?.number) {
+            setPhoneNumber(route?.params?.data?.number)
+            handleVerify(route?.params?.data?.number)
+        }
+    }, [route?.params?.data?.number])
+
+
+    const handleFundAirtime = () => {
+
+
+        const airtime = services?.find(element => element.module_name == 'Airtime')
+
+        const payload = {
+            phone: number,
+            module_id: Number(airtime.module_id),
+            amount: amount,
+            operator: saved_network,
+        }
+
+        setConfirmationData(payload)
+        setShowConfirmation(true)
+
+    }
+
+
+    useEffect(() => {
+        if (route?.params?.verified) {
+            setShowConfirmation(false)
+            handPayment()
+        }
+    }, [route?.params?.rand])
+
+
+    const handPayment = () => {
+        if (isConnected) {
+            setType('internet')
+            setVisible(true)
+            return
+        }
+
+        setMsg('Recharging you number, please wait...')
+
+        mutate({
+            ...confirmationData,
+            amount: Number(amount) + Number(rates?.service_fee?.airtime_fee),
+            type: 'airtime',
+            fee: rates?.service_fee?.airtime_fee,
+            product_id: network?.product_id
+        })
+        // setConfirmed(false)
+    }
+
 
     return (
         <ParentComponent>
-            <Header>Airtime For {name}</Header>
+            <Header>Airtime</Header>
 
             <ScrollView>
                 <IView p={20}>
@@ -40,12 +180,12 @@ const ReturningAirtime = ({ navigation, route }) => {
                                     saved_network == 'MTN' ?
                                         MTN_LOGO
                                         : saved_network == 'Globacom'
-                                         ? GLO_LOGO
-                                          : saved_network == 'Airtel'
-                                           ? AIRTEL_LOGO
-                                            : saved_network == '9mobile'
-                                             ? NINE_MOBILE
-                                                : null
+                                            ? GLO_LOGO
+                                            : saved_network == 'Airtel'
+                                                ? AIRTEL_LOGO
+                                                : saved_network == '9mobile'
+                                                    ? NINE_MOBILE
+                                                    : null
 
                                 }
                             />
@@ -159,6 +299,7 @@ const ReturningAirtime = ({ navigation, route }) => {
                     </View>
 
                     <TouchableOpacity
+                        onPress={handleFundAirtime}
                         activeOpacity={0.8}
                     >
                         <Box
@@ -173,6 +314,28 @@ const ReturningAirtime = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                 </IView>
+                <Confirmation
+                    visible={showConfirmation}
+                    setVisible={setShowConfirmation}
+                    data={confirmationData}
+                    verified={route?.params?.verified}
+                    page='Returning Airtime'
+                />
+                <Receipt
+                    amount={amount}
+                    visible={receipt}
+                    setVisible={showReceipt}
+                    channel='Wallet'
+                    number={number}
+                    data={receiptData}
+
+                />
+                {isLoading && (<Spinner
+                    loading={msg}
+                />)}
+                 {hanldeVerifyNumberMutation.isLoading && (<Spinner
+                    loading={msg}
+                />)}
             </ScrollView>
         </ParentComponent>
     )

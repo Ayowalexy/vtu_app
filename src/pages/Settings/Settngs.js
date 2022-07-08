@@ -7,10 +7,13 @@ import { Colors } from "../../components/utils/colors";
 import Icon from 'react-native-vector-icons/Ionicons'
 import Ion from 'react-native-vector-icons/EvilIcons'
 import Spinner from "../../components/Spinner/Spinner";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LogoutModal from "../../components/Modal/LogoutModal";
 import { notifications } from "../../services/network";
 import axios from "axios";
+import DocumentPicker from 'react-native-document-picker';
+import { uploadImage } from "../../services/network";
+import { setCurrentUserUserActionAsync } from "../../redux/store/user/user.actions";
 import { selectCurrentUser } from "../../redux/store/user/user.selector";
 
 
@@ -19,9 +22,73 @@ const Settings = ({ navigation }) => {
     const user = useSelector(selectCurrentUser)
     const [visible, setVsisble] = useState(false)
     const [unread, setUnread] = useState(0)
-
+    const [uri, setUri] = useState('')
+    const dispatch = useDispatch()
 
     console.log(user)
+
+    useEffect(() => {
+        if(uri){
+            (async() => {
+                console.log(uri)
+                const res = await uploadImage({image_path: uri})
+                if(res.status == 200){
+                    dispatch(setCurrentUserUserActionAsync())
+                }
+            })()
+        }
+    }, [uri])
+
+
+
+    const pickImage = async() => {
+        try {
+            const res = await DocumentPicker.pick({
+              type: [DocumentPicker.types.allFiles],
+            });
+      
+            const blob = {
+              uri: res[0].uri,
+              type: res[0].type,
+              name: res[0].name,
+            };
+
+         
+          
+                const formData = new FormData();
+        
+                let CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/namecoding-web-team/upload'
+                for (let i = 0; i < res.length; i++) {
+                    let file = res[i];
+                    formData.append("file", file);
+                    formData.append("upload_preset", "payrizone_passport");
+        
+                    fetch(CLOUDINARY_URL, {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                          console.log(data)
+                          setUri(data.url)
+                        })
+                        .catch(e => {
+                            console.log(e)
+                        })
+        
+                }
+        
+            
+      
+
+            // console.log(response)
+        } catch(e){
+            console.log(e)
+        }
+    }
+
 
     const actions = [
         {
@@ -88,20 +155,20 @@ const Settings = ({ navigation }) => {
                     borderWidth={1}
                     borderColor={Colors.DEFAULT}
                 >
-
-
                     <Image
                         source={{
-                            uri: user?.picture
+                            uri: uri || user?.picture
                         }}
                         style={{
                             width: 70,
-                            height: 70
+                            height: 70,
+                            borderRadius: 50
                         }}
                         resizeMode='cover'
                     />
 
-                    <View
+                    <TouchableOpacity
+                        onPress={pickImage}
                         style={{
                             position: 'absolute',
                             left: 40,
@@ -120,7 +187,7 @@ const Settings = ({ navigation }) => {
                                 color={Colors.WHITE}
                             />
                         </Box>
-                    </View>
+                    </TouchableOpacity>
                 </Box>
 
                 <IIText textTransform='uppercase' type='L' color={Colors.DEFAULT} size={17} >

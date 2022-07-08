@@ -115,8 +115,20 @@ const Data = ({ route, navigation }) => {
             ...confirmationData,
             amount: Number(selectedBundle?.topup_value) + Number(rates?.service_fee?.data_fee),
             type: 'data',
+            auto_save: on ? 1 : 0,
+            beneficiary: beneficiaryName ? beneficiaryName : phoneNumber,
+            fee: rates?.service_fee?.data_fee,
+            product_id: selectedBundle?.product_id
+
+        })
+
+        console.log('Payment data', {
+            ...confirmationData,
+            amount: Number(selectedBundle?.topup_value) + Number(rates?.service_fee?.data_fee),
+            type: 'data',
             name: beneficiaryName ? beneficiaryName : user?.first_name,
-            fee: rates?.service_fee?.data_fee
+            fee: rates?.service_fee?.data_fee,
+            product_id: selectedBundle?.product_id
 
         })
         // setConfirmed(false)
@@ -127,7 +139,7 @@ const Data = ({ route, navigation }) => {
             setShowConfirmation(false)
             handPayment()
         }
-    }, [route?.params?.verified])
+    }, [route?.params?.rand])
 
 
 

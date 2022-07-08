@@ -23,7 +23,7 @@ const EmptyState = () => {
             <IFlexer flexDirection="column" justifyContent='flex-start' >
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('Transfer Form')
+                        navigation.navigate('Bank Form')
                     }}
                 >
                     <Box
