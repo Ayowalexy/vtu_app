@@ -93,7 +93,7 @@ const Notfications = ({ navigation }) => {
                             h={50}
                             r={10}
 
-                            w={50}
+                        w={50}
                         >
                             <Icon size={30} name={
                                 data?.n_status == 1 ? 'mail-sharp' : 'mail-outline'

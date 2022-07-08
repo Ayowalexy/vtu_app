@@ -478,11 +478,11 @@ const TransferToOtherBanks = ({ route }) => {
                     data={data}
                     setVisible={setVisible}
                 />
-                {/* {
+                {
                     user?.account_type == 'Personal' && (
                         <AccountModal />
                     )
-                } */}
+                }
                 {isLoading && (<Spinner
                     loading={msg}
                 />)}

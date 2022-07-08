@@ -42,7 +42,6 @@ const AccountStatement = () => {
 
     const {isLoading, mutate} = useMutation(accountStatement, {
         onSuccess: data => {
-            console.log("data?.data", data?.data)
             if(data?.data?.flag == 1){
                 setType('verify')
                 setData(data?.data?.message)

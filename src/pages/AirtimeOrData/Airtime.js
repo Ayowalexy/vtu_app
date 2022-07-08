@@ -230,7 +230,7 @@ const Airtime = ({ navigation, route }) => {
             setShowConfirmation(false)
             handPayment()
         }
-    }, [route?.params?.rand])
+}, [route?.params?.rand])
 
 
 
