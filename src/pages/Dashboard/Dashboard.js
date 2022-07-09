@@ -95,7 +95,7 @@ const Dashboard = ({ navigation, route }) => {
     useEffect(() => {
         (async () => {
             const update = await appRelease()
-            const currentVersion = '1.0.2';
+            const currentVersion = '1.0.0';
             if ((update?.status == 200) && (currentVersion > update?.data?.app_version)) {
                 setShowUpdate(true)
                 console.log('update type', update?.data)
